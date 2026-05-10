@@ -1,0 +1,130 @@
+---
+import { getCollection } from "astro:content";
+import PageLayout from "../layouts/PageLayout.astro";
+
+const posts = (await getCollection("blog"))
+  .sort((a, b) => b.data.datePublished.valueOf() - a.data.datePublished.valueOf())
+  .slice(0, 5);
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
+---
+
+<PageLayout title="showgood" description="Personal website and blog">
+  <section class="hero">
+    <h1>Hi, I'm showgood.</h1>
+    <p class="tagline">
+      I tinker with self-hosted services, write about tools and infrastructure,
+      and maintain a <a href="https://garden.emacsbliss.com">digital garden</a> of notes.
+    </p>
+  </section>
+
+  <section class="recent">
+    <h2>Recent Posts</h2>
+    <ul class="post-list">
+      {posts.map(post => (
+        <li>
+          <a href={`/blog/${post.id}`}>
+            <span class="post-title">{post.data.title}</span>
+            <span class="post-date">{formatDate(post.data.datePublished)}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <a href="/blog" class="archive-link">All posts →</a>
+  </section>
+</PageLayout>
+
+<style>
+  .hero {
+    padding-block: var(--s16) var(--s12);
+    border-bottom: 1px solid var(--border);
+  }
+
+  h1 {
+    font-size: var(--text-4xl);
+    font-weight: var(--weight-bold);
+    margin-bottom: var(--s4);
+  }
+
+  .tagline {
+    font-size: var(--text-lg);
+    color: var(--fg-muted);
+    line-height: var(--leading-snug);
+    max-width: 520px;
+  }
+
+  .recent {
+    padding-block: var(--s12) 0;
+  }
+
+  .recent h2 {
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--fg-faint);
+    font-weight: var(--weight-medium);
+    margin-bottom: var(--s4);
+  }
+
+  .post-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .post-list li {
+    border-bottom: 1px solid var(--border-light);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .post-list a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-block: var(--s4);
+    gap: var(--s4);
+    text-decoration: none;
+    color: var(--fg);
+
+    &:hover {
+      .post-title {
+        color: var(--accent);
+      }
+    }
+  }
+
+  .post-title {
+    font-size: var(--text-base);
+    font-weight: var(--weight-medium);
+    transition: color 0.15s ease;
+  }
+
+  .post-date {
+    font-size: var(--text-sm);
+    color: var(--fg-faint);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .archive-link {
+    display: inline-block;
+    margin-top: var(--s6);
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .post-list a {
+      flex-direction: column;
+      gap: var(--s1);
+    }
+  }
+</style>

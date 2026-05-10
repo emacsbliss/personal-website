@@ -1,0 +1,10 @@
+/* Centered content container */
+.container {
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--s6);
+}
+
+.container--wide {
+  max-width: var(--max-width-wide);
+}

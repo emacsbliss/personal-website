@@ -1,0 +1,79 @@
+---
+import "../styles/prose.css";
+import BaseLayout from "./BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  datePublished?: Date;
+  dateModified?: Date;
+}
+
+const { title, description, datePublished, dateModified } = Astro.props;
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+---
+
+<BaseLayout title={title} description={description}>
+  <Header />
+  <main>
+    <article class="container">
+      <header class="post-header">
+        <h1>{title}</h1>
+        {description && <p class="subtitle">{description}</p>}
+        <time class="date" datetime={datePublished?.toISOString()}>
+          {datePublished && formatDate(datePublished)}
+          {dateModified && <span class="modified"> · Updated {formatDate(dateModified)}</span>}
+        </time>
+      </header>
+      <div class="prose">
+        <slot />
+      </div>
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  main {
+    padding-block-start: var(--s12);
+    padding-block-end: var(--s24);
+  }
+
+  .post-header {
+    margin-bottom: var(--s12);
+    padding-bottom: var(--s8);
+    border-bottom: 1px solid var(--border);
+  }
+
+  h1 {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--s4);
+  }
+
+  .subtitle {
+    font-size: var(--text-xl);
+    color: var(--fg-muted);
+    line-height: var(--leading-snug);
+  }
+
+  .date {
+    display: block;
+    margin-top: var(--s4);
+    font-size: var(--text-sm);
+    color: var(--fg-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .modified {
+    color: var(--fg-faint);
+  }
+</style>

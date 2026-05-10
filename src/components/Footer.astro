@@ -1,0 +1,45 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container container--wide footer-inner">
+    <span class="copyright">© {year} showgood</span>
+    <div class="footer-links">
+      <a href="https://github.com/emacsbliss" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="/rss.xml">RSS</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding-block: var(--s6);
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .copyright {
+    font-size: var(--text-sm);
+    color: var(--fg-faint);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: var(--s4);
+  }
+
+  .footer-links a {
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+
+    &:hover {
+      color: var(--fg);
+    }
+  }
+</style>

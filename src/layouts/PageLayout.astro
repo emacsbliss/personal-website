@@ -1,0 +1,30 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <Header />
+  <main>
+    <div class="container">
+      <slot />
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  main {
+    padding-block-start: var(--s12);
+    padding-block-end: var(--s24);
+    min-height: calc(100vh - var(--header-height) - 80px);
+  }
+</style>
